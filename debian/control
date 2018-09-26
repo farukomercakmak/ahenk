@@ -19,7 +19,22 @@ Depends: ${misc:Depends},
          python3-sleekxmpp,
          python3-watchdog,
          python3-easygui,
-         libpam-script
+         libpam-script,
+	 ahenk-script,
+         ahenk-package-manager,
+         ahenk-service,
+         ahenk-remote-access,
+         ahenk-conky,
+         ahenk-network-inventory,
+         ahenk-resource-usage,
+         ahenk-login-manager,
+         ahenk-manage-root,
+         ahenk-local-user,
+         ahenk-ldap-login,
+         ahenk-usb,
+         ahenk-user-privilege,
+         ahenk-sudoers,
+         ahenk-browser
 Replaces: libpam-runtime
 Description: The client side of the Lider Ahenk Project
  Lider Ahenk is an open source project which provides solutions
