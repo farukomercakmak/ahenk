@@ -13,6 +13,9 @@ from base.system.system import System
 from base.timer.setup_timer import SetupTimer
 from base.timer.timer import Timer
 from base.util.util import Util
+from helper import system as sysx
+import pwd
+import os, signal
 
 
 class Registration:
@@ -185,18 +188,22 @@ class Registration:
         System.Process.kill_by_pid(int(System.Ahenk.get_pid_number()))
 
     def disable_local_users(self):
-        command_users = 'awk -F: \'{print $1 ":" $6 ":" $7}\' /etc/passwd | grep /bin/bash'
-        command_user_disable = 'passwd -l {}'
-        command_logout_user = 'pkill -u {}'
-        result_code, p_out, p_err = self.util.execute(command_users)
-        lines = p_out.split('\n')
-        lines.pop()
-        self.logger.debug("will be disabled: "+str(lines))
-        for line in lines:
-            detail = line.split(':')
-            if detail[0] != 'root':
-                self.util.execute(command_user_disable.format(detail[0]))
-                self.util.execute(command_logout_user.format(detail[0]))
-                self.logger.debug('{0} has been disabled and killed all processes for {0}'.format(detail[0]))
-            else:
-                self.logger.info("Ahenk has only root user")
+        passwd_cmd = 'passwd -l {}'
+        change_home = 'usermod -m -d {0} {1}'
+        change_username = 'usermod -l {0} {1}'
+        content = self.util.read_file('/etc/passwd')
+        for p in pwd.getpwall():
+
+            if not sysx.shell_is_interactive(p.pw_shell):
+                continue
+            if p.pw_uid == 0:
+                continue
+            if p.pw_name in content:
+
+                new_home_dir = p.pw_dir.rstrip('/') + '-local/'
+                new_username = p.pw_name+'-local'
+                sysx.killuserprocs(p.pw_uid)
+                self.util.execute(passwd_cmd.format(p.pw_name))
+                self.util.execute(change_username.format(new_username, p.pw_name))
+                self.util.execute(change_home.format(new_home_dir, new_username))
+                self.logger.debug("User: '{0}' will be disabled and changed username and home directory of username".format(p.pw_name))
