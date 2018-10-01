@@ -25,7 +25,7 @@ Depends: ${misc:Depends},
          ahenk-service,
          ahenk-remote-access,
          ahenk-conky,
-         ahenk-network-manager
+         ahenk-network-manager,
          ahenk-resource-usage,
          ahenk-login-manager,
          ahenk-manage-root,
