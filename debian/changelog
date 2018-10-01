@@ -1,4 +1,4 @@
-ahenk (1.0.0-7) unstable; urgency=medium
+ahenk (1.0.0-7.1) unstable; urgency=medium
 
   [ Ömer Çakmak ]
   * Add dependency python3-easygui
