@@ -5,8 +5,3 @@ set -e
 if [ -d /etc/ahenk ] && [ "$1" = "purge" ];then
     rm -rf /etc/ahenk
 fi
-
-if [ -f /usr/share/ahenk/pam_scripts_original/common-session ]; then
-    cp -fr /usr/share/ahenk/pam_scripts_original/common-session /etc/pam.d/
-    rm -rf /usr/share/ahenk/pam_scripts_original
-fi

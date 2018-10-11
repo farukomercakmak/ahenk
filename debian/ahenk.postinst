@@ -4,15 +4,6 @@ set -e
 
 mkdir -p /usr/share/ahenk/plugins
 
-if [ -f /etc/pam.d/common-session ]; then
-
-    mkdir -p /usr/share/ahenk/pam_scripts_original
-    cp -fr /etc/pam.d/common-session /usr/share/ahenk/pam_scripts_original/
-    sed -i '/pam_script.so/d' /etc/pam.d/common-session
-    echo "session optional        pam_script.so"  >> /etc/pam.d/common-session
-    DEBIAN_FRONTEND=noninteractive pam-auth-update
-fi
-
 # update ahenk from 1.0.0-6 to 1.0.0-7
 if [ ! -d /etc/ahenk ]; then
 
