@@ -116,8 +116,3 @@ usr/share/libpam-script/pam_script_ses_open
 usr/share/libpam-script
 usr/share
 usr/
-lib/systemd/system/ahenk
-lib/systemd/system/ahenk.service
-lib/systemd/system
-lib/systemd
-lib/
