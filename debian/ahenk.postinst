@@ -2,7 +2,7 @@
 
 set -e
 
-mkdir -p /usr/share/ahenk/plugins
+#mkdir -p /usr/share/ahenk/plugins
 
 # update ahenk from 1.0.0-6 to 1.0.0-7
 if [ ! -d /etc/ahenk ]; then
