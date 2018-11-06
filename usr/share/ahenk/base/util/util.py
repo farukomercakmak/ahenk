@@ -12,6 +12,7 @@ import shutil
 import stat
 import subprocess
 import uuid
+import locale
 from base.scope import Scope
 
 
@@ -22,6 +23,11 @@ class Util:
     @staticmethod
     def close_session(username):
         Util.execute('pkill -9 -u {0}'.format(username))
+
+    @staticmethod
+    def shutdown():
+        print("shutting down")
+        Util.execute('reboot')
 
     @staticmethod
     def create_file(full_path):
@@ -145,6 +151,8 @@ class Util:
                 Scope.get_instance().get_logger().debug('Executing command: ' +str(command))
             process = subprocess.Popen(command, stdin=stdin, env=env, cwd=cwd, stderr=subprocess.PIPE,
                                        stdout=subprocess.PIPE, shell=shell)
+
+            Scope.get_instance().get_logger().debug('Executing command: ' + str(command))
 
             if result is True:
                 result_code = process.wait()
