@@ -14,6 +14,7 @@ usr/share/ahenk/base/execution
 usr/share/ahenk/base/agreement/agreement.py
 usr/share/ahenk/base/agreement/ask.py
 usr/share/ahenk/base/agreement/confirm.py
+usr/share/ahenk/base/agreement/ahenkmessage.py
 usr/share/ahenk/base/agreement
 usr/share/ahenk/base/registration/registration.py
 usr/share/ahenk/base/registration/__init__.py
