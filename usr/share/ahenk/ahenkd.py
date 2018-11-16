@@ -301,10 +301,11 @@ class AhenkDaemon(BaseDaemon):
                 conf_manager.set('MACHINE', 'user_disabled', '1')
 
                 with open('/etc/ahenk/ahenk.conf', 'w') as configfile:
-                    self.conf_manager.write(configfile)
-                self.logger.info('local user disabled')
+                    self.logger.info('oepning config file ')
+                    conf_manager.write(configfile)
+
                 user_disabled = conf_manager.get("MACHINE", "user_disabled")
-                self.logger.info('User disabled value=' + str(user_disabled))
+                self.logger.info('User succesfully disabled value=' + str(user_disabled))
             else :
                 self.logger.info('users already disabled')
 

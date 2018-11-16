@@ -357,6 +357,8 @@ class Registration:
         self.unregister()
         self.logger.info('Purge ldap packages')
         Util.execute("sudo apt purge libpam-ldap libnss-ldap ldap-utils -y")
+        #self.logger.info('Purge ahenk packages')
+        #Util.execute("sudo apt purge ahenk ahenk-* -y")
         Util.execute("sudo apt autoremove -y")
         self.change_configs_after_purge()
         self.logger.info('purging successfull')
@@ -372,8 +374,8 @@ class Registration:
         if Util.show_message("Değişikliklerin etkili olması için sistem yeniden başlatmanız gerekmektedir.",""):
             Util.shutdown()
 
-        System.Process.kill_by_pid(int(System.Ahenk.get_pid_number()))
-        sys.exit(2)
+        #System.Process.kill_by_pid(int(System.Ahenk.get_pid_number()))
+        #sys.exit(2)
 
     def change_configs_after_purge(self):
 
