@@ -358,13 +358,7 @@ class Registration:
 
     def purge_and_unregister(self):
         try:
-            user_name = self.db_service.select_one_result('session', 'username')
-            display = self.db_service.select_one_result('session', 'display')
 
-            Util.show_message(user_name, display, "Ahenk Lider MYS sisteminden çıkarılmıştır.", "")
-
-            Util.show_message(user_name, display,
-                                 "Değişikliklerin etkili olması için sistem yeniden başlatmanız gerekmektedir.", "")
 
             self.logger.info('Ahenk conf cleaned')
             self.logger.info('Ahenk conf cleaning from db')
@@ -514,6 +508,7 @@ class Registration:
         change_username = 'usermod -l {0} {1}'
         content = Util.read_file('/etc/passwd')
         kill_all_process = 'killall -KILL -u {}'
+        change_permisson = "chmod -R 700 {}"
         for p in pwd.getpwall():
             self.logger.info("User: '{0}' will be disabled and changed username and home directory of username".format(p.pw_name))
             if not sysx.shell_is_interactive(p.pw_shell):
@@ -527,3 +522,4 @@ class Registration:
                 Util.execute(passwd_cmd.format(p.pw_name))
                 Util.execute(change_username.format(new_username, p.pw_name))
                 Util.execute(change_home.format(new_home_dir, new_username))
+                Util.execute(change_permisson.format(new_home_dir))

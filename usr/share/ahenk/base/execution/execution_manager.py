@@ -45,6 +45,7 @@ class ExecutionManager(object):
         self.event_manager.register_event(MessageType.RESPONSE_AGREEMENT.value, self.agreement_update)
         self.event_manager.register_event(MessageType.UPDATE_SCHEDULED_TASK.value, self.update_scheduled_task)
         self.event_manager.register_event(MessageType.REGISTRATION_RESPONSE.value, self.unregister) # registration message for unregister event
+        self.event_manager.register_event(MessageType.LOGIN_RESPONSE.value, self.login_response) # registration message for unregister event
 
     def agreement_update(self, arg):
 
@@ -403,17 +404,18 @@ class ExecutionManager(object):
         j = json.loads(msg)
         status = str(j['status']).lower()
 
+        user_name = self.db_service.select_one_result('session', 'username', " 1=1 order by id desc ")
+        display = self.db_service.select_one_result('session', 'display', " 1=1 order by id desc ")
+
         if 'not_authorized' == str(status):
             self.logger.info('Registration is failed. User not authorized')
-
-            user_name = self.db_service.select_one_result('session', 'username')
-            display = self.db_service.select_one_result('session', 'display')
-
             Util.show_message(user_name,display,'Ahenk Lider MYS sisteminden çıkarmak için yetkili kullanıcı haklarına sahip olmanız gerekmektedir.',
                    'Kullanıcı Yetkilendirme Hatası')
         else :
-            registration= Scope.get_instance().get_registration()
-            registration.purge_and_unregister()
+            Util.show_message(user_name, display, "Ahenk Lider MYS sisteminden çıkarılmıştır.", "")
+            if Util.show_message(user_name, display, "Değişikliklerin etkili olması için sistemi yeniden başlatmanız gerekmektedir.", "") :
+                registration= Scope.get_instance().get_registration()
+                registration.purge_and_unregister()
 
 
     def json_to_task_bean(self, json_data, file_server_conf=None):
@@ -530,3 +532,23 @@ class ExecutionManager(object):
                           user_execution_id=json_data['userCommandExecutionId'],
                           agent_expiration_date=json_data['agentPolicyExpirationDate'],
                           user_expiration_date=json_data['userPolicyExpirationDate'])
+
+    def login_response(self, msg):
+        jData = json.loads(msg)
+        username = jData['userName']
+        if username is not None:
+            self.create_sudo_polkit(username)
+
+
+    def create_sudo_polkit(self,username):
+        content = "[Configuration] \nAdminIdentities=unix-user:{}".format(username)
+        ahenk_policy_file = "/etc/polkit-1/localauthority.conf.d/99-ahenk-policy.conf"
+        if not Util.is_exist(ahenk_policy_file):
+            Util.create_file(ahenk_policy_file)
+            Util.write_file(ahenk_policy_file, content)
+            self.logger.debug('Ahenk polkit file created and user added.. User : {}'.format(username))
+        else:
+            self.logger.debug('Writing result to file')
+            Util.delete_file(ahenk_policy_file)
+            Util.create_file(ahenk_policy_file)
+            Util.write_file(ahenk_policy_file, content)
