@@ -18,6 +18,14 @@ usr/share/ahenk/base/agreement/ahenkmessage.py
 usr/share/ahenk/base/agreement
 usr/share/ahenk/base/agreement/unregistrationmessage.py
 usr/share/ahenk/base/registration/registration.py
+usr/share/ahenk/base/registration/execute_cancel_ldap_login.py
+usr/share/ahenk/base/registration/execute_ldap_login.py
+usr/share/ahenk/base/registration/config-files/ldap
+usr/share/ahenk/base/registration/config-files/pam_script
+usr/share/ahenk/base/registration/config-files
+usr/share/ahenk/base/registration/scripts/ldap-login.sh
+usr/share/ahenk/base/registration/scripts/test.sh
+usr/share/ahenk/base/registration/scripts
 usr/share/ahenk/base/registration/__init__.py
 usr/share/ahenk/base/registration
 usr/share/ahenk/base/database/ahenk_db_service.py
@@ -118,3 +126,4 @@ usr/share/libpam-script/pam_script_ses_open
 usr/share/libpam-script
 usr/share
 usr/
+
