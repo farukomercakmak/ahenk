@@ -24,7 +24,6 @@ usr/share/ahenk/base/registration/config-files/ldap
 usr/share/ahenk/base/registration/config-files/pam_script
 usr/share/ahenk/base/registration/config-files
 usr/share/ahenk/base/registration/scripts/ldap-login.sh
-usr/share/ahenk/base/registration/scripts/test.sh
 usr/share/ahenk/base/registration/scripts
 usr/share/ahenk/base/registration/__init__.py
 usr/share/ahenk/base/registration
