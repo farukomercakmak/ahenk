@@ -16,8 +16,8 @@ from base.timer.setup_timer import SetupTimer
 from base.timer.timer import Timer
 import re
 import os
-from base.registration.execute_cancel_ldap_login import ExecuteCancelLDAPLogin
-from base.registration.execute_ldap_login import ExecuteLDAPLogin
+from base.registration.execute_cancel_sssd_authentication import ExecuteCancelSSSDAuthentication
+from base.registration.execute_sssd_authentication import ExecuteSSSDAuthentication
 
 class Registration:
     def __init__(self):
@@ -29,43 +29,50 @@ class Registration:
         self.conf_manager = scope.get_configuration_manager()
         self.db_service = scope.get_db_service()
         self.util = Util()
-        self.service_name='im.liderahenk.org'
+        self.servicename='im.liderahenk.org'
 
         #self.event_manager.register_event('REGISTRATION_RESPONSE', self.registration_process)
         self.event_manager.register_event('REGISTRATION_SUCCESS', self.registration_success)
         self.event_manager.register_event('REGISTRATION_ERROR', self.registration_error)
 
-        self.ldap_login_cancel = ExecuteCancelLDAPLogin()
-        self.ldap_login = ExecuteLDAPLogin()
+        self.ldap_login_cancel = ExecuteCancelSSSDAuthentication()
+        self.ldap_login = ExecuteSSSDAuthentication()
 
         if self.is_registered():
             self.logger.debug('Ahenk already registered')
         else:
             self.register(True)
 
-    def registration_request(self):
+    def registration_request(self, hostname,username,password):
 
         self.logger.debug('Requesting registration')
         # SetupTimer.start(Timer(System.Ahenk.registration_timeout(), timeout_function=self.registration_timeout,checker_func=self.is_registered, kwargs=None))
 
-        self.host = self.conf_manager.get("CONNECTION", "host")
         self.servicename = self.conf_manager.get("CONNECTION", "servicename")
-        self.user_name = ''
-        self.user_password= ''
-        user_name= os.getlogin()
-        self.logger.debug('User : '+ str(user_name))
-        pout = Util.show_registration_message(user_name,'Makineyi Lider MYS sistemine kaydetmek için bilgileri ilgili alanlara giriniz. LÜTFEN DEVAM EDEN İŞLEMLERİ SONLANDIRDIĞINZA EMİN OLUNUZ !',
-                                              'LIDER MYS SISTEMINE KAYIT', self.host)
-        self.logger.debug('pout : ' + str(pout))
-        field_values = pout.split(' ')
-        user_registration_info = list(field_values)
-        if self.host == '' :
-            self.host = user_registration_info[0]
-            self.user_name = user_registration_info[1]
-            self.user_password = user_registration_info[2]
-        else:
-            self.user_name = user_registration_info[0]
-            self.user_password = user_registration_info[1]
+
+        self.host = hostname
+        self.user_name = username
+        self.user_password= password
+
+        if(username is None and password is None and self.host is None):
+
+            self.host = self.conf_manager.get("CONNECTION", "host")
+
+            user_name= os.getlogin()
+            self.logger.debug('User : '+ str(user_name))
+            pout = Util.show_registration_message(user_name,'Makineyi Lider MYS sistemine kaydetmek için bilgileri ilgili alanlara giriniz. LÜTFEN DEVAM EDEN İŞLEMLERİ SONLANDIRDIĞINZA EMİN OLUNUZ !',
+                                                  'LIDER MYS SISTEMINE KAYIT', self.host)
+            self.logger.debug('pout : ' + str(pout))
+            field_values = pout.split(' ')
+            user_registration_info = list(field_values)
+
+            if self.host == '':
+                self.host = user_registration_info[0]
+                self.user_name = user_registration_info[1]
+                self.user_password = user_registration_info[2]
+            else:
+                self.user_name = user_registration_info[0]
+                self.user_password = user_registration_info[1]
 
         #anon_messenger = AnonymousMessenger(self.message_manager.registration_msg(user_name,user_password), self.host,self.servicename)
         #anon_messenger.connect_to_server()
