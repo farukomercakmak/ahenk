@@ -35,7 +35,8 @@ Depends: ${misc:Depends},
          ahenk-user-privilege,
          ahenk-sudoers,
          ahenk-browser,
-         ahenk-ldap
+         ahenk-ldap,
+         ahenk-register
 Replaces: libpam-runtime
 Description: The client side of the Lider Ahenk Project
  Lider Ahenk is an open source project which provides solutions
