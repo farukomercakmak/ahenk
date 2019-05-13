@@ -20,8 +20,11 @@ usr/share/ahenk/base/agreement/unregistrationmessage.py
 usr/share/ahenk/base/registration/registration.py
 usr/share/ahenk/base/registration/execute_cancel_ldap_login.py
 usr/share/ahenk/base/registration/execute_ldap_login.py
+usr/share/ahenk/base/registration/execute_cancel_sssd_authentication.py
+usr/share/ahenk/base/registration/execute_sssd_authentication.py
 usr/share/ahenk/base/registration/config-files/ldap
 usr/share/ahenk/base/registration/config-files/pam_script
+usr/share/ahenk/base/registration/config-files/sssd.conf
 usr/share/ahenk/base/registration/config-files
 usr/share/ahenk/base/registration/scripts/ldap-login.sh
 usr/share/ahenk/base/registration/scripts
